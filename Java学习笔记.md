@@ -74,9 +74,13 @@ JVM加载类的实现方式，我们称为 ==**双亲委托模型**==：
 
 现在随着工作中用到的多线程的知识越来越多，需要梳理一下
 
+## 进程和线程的区别
+
+1. 进程是==资源分配的基本单位==，==线程是调度和分派的基本单位==
+
 ## 多线程通信方式
 
- ### 锁
+### 锁
 
 锁，用的最多的也就是synchronized关键字了，不多说
 
@@ -171,4 +175,140 @@ math.Notify();
 
 > 在Java中就是使用反射，EventHandler传入函数名，通过反射来根据函数名来执行对应的方法
 
-w
+# 计算机网络
+
+## 网络模型
+
+![img](Java学习笔记.assets/20170228232022919.gif)
+
+!["tcpip](Java学习笔记.assets/o_200520145435tcpip.png)
+
+### 各层次详解
+
+#### 1、物理层
+
+（1）概念：是[计算机网络](http://baike.baidu.com/view/25482.htm)[OSI模型](http://baike.baidu.com/view/571842.htm)中最低的一层。物理层规定:为传输数据所需要的物理链路创建、维持、拆除，而提供具有机械的，电子的，功能的和规范的特性。简单的说，物理层确保原始的[数据](http://baike.baidu.com/view/38752.htm)可在各种物理媒体上传输。[局域网](http://baike.baidu.com/view/788.htm)与[广域网](http://baike.baidu.com/view/21956.htm)皆属第1、2层。
+
+（2）协议物理层支持的协议有：OSI采纳了各种现成的协议，其中有RS-232、RS-449、X.21、V.35、ISDN、以及FDDI、IEEE802.3、IEEE802.4、和IEEE802.5等802系列部分无线网协议等协议。
+
+（3）设备：双绞线（3,5，超5,6,7类线），同轴电缆，光纤，无线传输（电磁，无线电，微波，红外线，激光灯）、**==集线器、中继器==**
+
+（4）数据单元：**==比特（bit）==**
+
+（5）总结：简单来说，物理层规定了数据如何在线路上传输，不仅仅是线路的创建，传输材质的选择，还包含了确保传输稳定的协议。从信息封装和隐藏的角度去思考，物理层能够确保信息传输与设备无关，只要协议正确，你用什么样的传输线路都是可以的。
+
+（6）其他在连接设备的时候，我们经常看到我们的链接线上表示着DTE和DCE两个标志，那么分别是什么含义呢？
+
+DTE（Data Terminal Equipment），是数据终端设备，具有一定的数据处理能力和发送、接受数据能力的设备。
+
+DCE（Data Circuit-terminating Equipment），是数据电路端设备，他在DTE和传输线路之间提供信号变换和编码的功能，并且负责建立、保持和释放数据链路的链接。
+
+一般而言，现在的连接线DTE和DCE接口是一样的，而且设备（路由器）也允许互插，只不过标记DCE的头部链接的设备要设置一些同步时间的东东，这样两个设备才能同步工作。
+
+#### 2、链路层
+
+（1）概念：[数据链路层](http://baike.baidu.com/view/239592.htm)的最基本的功能是向该层[用户](http://baike.baidu.com/view/200012.htm)提供透明的和可靠的[数据传送](http://baike.baidu.com/view/5593592.htm)基本服务。透明性是指该层上传输的数据的内容、格式及编码没有限制，也没有必要解释信息结构的意义；可靠的 传输使用户免去对丢失信息、干扰信息及顺序不正确等的担心。在[物理层](http://baike.baidu.com/view/239585.htm)中这些情况都可能发生，在数据链路层中必须用[纠错码](http://baike.baidu.com/view/126214.htm)来检错与纠错。数据链路层是对物理层传输原始[比特](http://baike.baidu.com/view/189728.htm)流的功能的加强，将物理层提供的可能出错的[物理连接](http://baike.baidu.com/subview/5317561/5348699.htm)改造成为逻辑上无差错的[数据链路](http://baike.baidu.com/view/1128788.htm)，使之对网络层表现为一无差错的线路。
+
+（2）协议：链路层支持的协议有：PPP，HDLC，ATM，VLAN，ARQ（自动重传请求协议），CSMA/CD（载波监听多点介入/碰撞检测协议），LCP（链路控制协议，是网络控制协议），ATM（异步传递方式），无线网的802系列协议的一部分
+
+（3）设备：==交换机、网桥、网卡==等
+
+（4）数据单元：==帧（frame）==
+
+（5）总结：链路层的主要作用--透明传输、差错校验、流量控制、链路管理、MAC寻址、帧同步。
+
+（6）其他：链路层一般包含两个子层：LLC和MAC层。这两个子层的作用稍后细讲。
+
+#### 3、网络层
+
+（1）概念：网络层是[OSI参考模型](http://baike.baidu.com/view/38361.htm)中的第三层，介于[传输层](http://baike.baidu.com/view/239605.htm)和[数据链路层](http://baike.baidu.com/view/239592.htm)之间，它在数据链路层提供的两个相邻端点之间的数据帧的传送功能上，进一步管理网络中的[数据通信](http://baike.baidu.com/view/49233.htm)，将数据设法从源端经过若干个中间[节点](http://baike.baidu.com/view/47398.htm)传送到[目的](http://baike.baidu.com/view/652289.htm)端，从而向运输层提供最基本的端到端的[数据传送](http://baike.baidu.com/view/5593592.htm)服务。主要内容有：虚电路分组交换和[数据报](http://baike.baidu.com/view/121589.htm)分组交换、[路由选择](http://baike.baidu.com/view/632880.htm)[算法](http://baike.baidu.com/view/7420.htm)、阻塞控制方法、[X.25协议](http://baike.baidu.com/view/175414.htm)、综合业务数据网（ISDN）、[异步传输模式](http://baike.baidu.com/view/27150.htm)（ATM）及网际互连[原理](http://baike.baidu.com/view/437790.htm)与实现。
+
+（2）协议：==IP协议，ARP（地址解析协议）==、RARP（逆地址解析协议），SNMP（简单网络管理协议），，DHCP（动态主机配置协议），ICMP（Internet 控制报文协议），IGMP（Internet 组管理协议），RIP（路由信息协议），OSPF（开放式最短路径优先协议），BGP4（边界网关协议），IS-IS（中间系统到中间系统的路由选择协议），IPsec（Internet 协议安全性）
+
+（3）设备：路由器、防火墙，多层交换机（也叫三层交换机，带网络层的交换机）
+
+（4）数据单元：==数据包（packet）==
+
+（5）总结：网络层和传输层是计算机网络的重点和难点。网络层相关的知识有很多，除了基础IP协议，还包括ARP协议，RARP协议，以及常见的路由协议都需要掌握。
+
+#### 4、传输层
+
+（1）概念：传输层（Transport Layer）是ISO OSI协议的第四层协议，实现端到端的数据传输。该层是两台[计算机](http://baike.baidu.com/view/3314.htm)经过网络进行[数据通信](http://baike.baidu.com/view/49233.htm)时，第一个端到端的层次，具有缓冲作用。当[网络层](http://baike.baidu.com/view/239600.htm)服务质量不能满足要求时，它将服务加以提高，以满足[高层](http://baike.baidu.com/view/1281420.htm)的要求；当网络层服务质量较好时，它只用很少的工作。传输层还可进行复用，即在一个网络连接上创建多个逻辑连接。
+
+传输层在终端用户之间提供透明的数据传输，向上层提供可靠的数据传输服务。传输层在给定的链路上通过流量控、分段/重组和差错控制。一些协议是面向链接的。这就意味着传输层能保持对分段的跟踪，并且重传那些失败的分段。
+
+（2）协议：==TCP（传输控制协议），UDP（数据报拥塞控制协议）==，SCTP（流控制传输协议），RTP（实时传送协议），RSVP（资源预留协议），PPTP（点对点隧道协议）
+
+（3）设备：
+
+（4）数据单元：**==数据段（Segment）==**
+
+（5）总结：传输层的重点是TCP协议和UDP协议的掌握，PPTP最常用的实在VPN中，这个也可以适当了解。
+
+#### 5、应用层（会话层、表示层、应用层三层总称）
+
+数据单元：==报文（Message）==
+
+协议：
+
+NTP  （Network Time Protocol ）网络校时协议。 
+
+GTP 通用数据传输平台
+
+DHCP(Dynamic Host Configuration Protocol)动态主机分配协议，使用 UDP 协议工作，主要有两个用途：给内部网络或网络服务供应商自动分配 IP 地址，给用户或者内部网络管理员作为对所有计算机作中央管理的手段。实 现即插即用连网。 
+
+
+BOOTP (BOOTstrapProtocol) 引导程序协议/ 自举协议，使用UDP 来使 一个无盘工作站自动获取配置信息。静态的配置协议 DNS   （Domain Name System ）域名解析<端口号53> 
+
+
+FTP  （File Transfer Protocol ）文件传输协议<端口号21>减少或消除不同操作系统下处理文件的不兼容性。 
+
+Gopher  （The Internet Gopher Protocol ）网际Gopher 协议 
+
+HTTP   （Hypertext Transfer Protocol ）超文本传输协议 <端口号 80>， 面向事务的应用层协议。 
+
+IMAP4 (Internet Message Access Protocol 4) Internet 信息访问协议的第 4 版本 
+
+IRC  （Internet Relay Chat ）网络聊天协议 
+
+NNTP   （Network News Transport Protocol ）网络新闻传输协议 
+
+XMPP 可扩展消息处理现场协议 
+
+POP3 (Post Office Protocol 3) 即邮局协议的第3 个版本，用于接受邮件。 
+
+SIP()信令控制协议 
+
+SMTP （Simple Mail Transfer Protocol ）简单邮件传输协议 <端口号25> 用于发送邮件。 
+
+
+SNMP (Simple Network Management Protocol),简单网络管理协议 
+
+SSH  （Secure Shell ）安全外壳协议 
+
+TELNET   远程登录协议 <端口号23> 
+
+RPC  （Remote Procedure Call Protocol ）（RFC- 1831）远程过程调用协 议 
+
+RTCP   （RTP Control Protocol ）RTP  控制协议 
+
+RTSP  （Real Time Streaming Protocol ）实时流传输协议 
+
+TLS  （Transport Layer Security Protocol ）安全传输层协议 
+
+SDP( Session Description Protocol ）会话描述协议 
+
+
+SOAP  （Simple Object Access Protocol ）简单对象访问协议 
+
+STUN  （Simple Traversal of UDP over NATs ，NAT    的UDP 简单穿越） 是一种网络协议 
+
+## 网络地址
+
+网络地址是IP地址与子网掩码==按位与==的结果，单凭IP地址不能看出网络地址
+
+## 基本概念
+
+### MTU和MSS的区别
+
+最大报文段长度（MSS）与[最大传输单元](https://baike.baidu.com/item/最大传输单元/9730690)（Maximum Transmission Unit, MTU）均是协议用来定义最大长度的。不同的是，MTU应用于OSI模型的第二层数据链接层，并无具体针对的协议。MTU限制了数据链接层上可以传输的数据包的大小，也因此限制了上层（网络层）的数据包大小。例如，如果已知某局域网的MTU为1500字节，则在网络层的[因特网协议](https://baike.baidu.com/item/因特网协议/9453796)（Internet Protocol, IP）里，最大的数据包大小为1500字节（包含IP协议头）。MSS针对的是OSI模型里第四层传输层的TCP协议。因为MSS应用的协议在数据链接层的上层，MSS会受到MTU的限制
