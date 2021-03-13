@@ -56,6 +56,8 @@ expect eof
 
 截图 shift+command+4
 
+查看文件大小  du -sh .
+
 
 
 

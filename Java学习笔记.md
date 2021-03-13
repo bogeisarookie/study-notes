@@ -104,6 +104,14 @@ gitbook https://github.com/RedSpider1/concurrent
 
 A线程调用B线程的join 方法，则A线程需要等待B线程结束之后才能被唤醒
 
+## 线程池
+
+### 优先级
+
+==提交优先级：核心线程>工作队列>非核心线程==
+
+==执行优先级：核心线程>非核心线程>工作队列==
+
 # 设计模式
 
 ## 单例模式
@@ -312,3 +320,319 @@ STUN  （Simple Traversal of UDP over NATs ，NAT    的UDP 简单穿越） 是�
 ### MTU和MSS的区别
 
 最大报文段长度（MSS）与[最大传输单元](https://baike.baidu.com/item/最大传输单元/9730690)（Maximum Transmission Unit, MTU）均是协议用来定义最大长度的。不同的是，MTU应用于OSI模型的第二层数据链接层，并无具体针对的协议。MTU限制了数据链接层上可以传输的数据包的大小，也因此限制了上层（网络层）的数据包大小。例如，如果已知某局域网的MTU为1500字节，则在网络层的[因特网协议](https://baike.baidu.com/item/因特网协议/9453796)（Internet Protocol, IP）里，最大的数据包大小为1500字节（包含IP协议头）。MSS针对的是OSI模型里第四层传输层的TCP协议。因为MSS应用的协议在数据链接层的上层，MSS会受到MTU的限制
+
+# Spring
+
+## 常用依赖
+
+```xml
+<!-- https://mvnrepository.com/artifact/org.springframework/spring-webmvc -->
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-webmvc</artifactId>
+    <version>5.3.4</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/junit/junit -->
+<dependency>
+    <groupId>junit</groupId>
+    <artifactId>junit</artifactId>
+    <version>4.12</version>
+    <scope>test</scope>
+</dependency>
+
+```
+
+## 开启Spring注解
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:annotation-config/>
+
+</beans>
+```
+
+
+
+## 控制反转
+
+之前，程序是主动创建对象，控制权在程序员手中
+
+使用set接口可以让使用者自己传入自己的需求，控制权在用户手中，我们被动接受，实现控制权的转移
+
+## @Autowired
+
+用于属性的自动装配，也可用在setXXX方法上，构造方法上。
+
+使用Autowired我们可以不用编写Set方法，前提是这个自动装配的属性在IOC容器中存在，切符合byName
+
+## @Resource
+
+java的原生注解，也适用于装配，只不过优先使用名字，在通过类型
+
+## @Component
+
+放在类上，意味着该类被装配了，由Spring管理
+
+它有几个衍生注解
+
+- dao @Repository
+- service @Service
+- controller @Controller
+
+这些都是按照MVC架构来的，这些名字同Component一样，都是组件的意思,功能也是一样，都是将某个类注册到Spring容器中进行装配。
+
+
+
+## 整合mybatis
+
+### 导包
+
+```xml
+				<dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.46</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.mybatis/mybatis -->
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>3.5.3</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-webmvc -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>5.3.4</version>
+        </dependency>
+        <!--如果Spring要操作数据库的话，还需要一个Spring-jdbc-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>5.2.13.RELEASE</version>
+        </dependency>
+        <!--aop需要的包-->
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>1.9.6</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.mybatis/mybatis-spring -->
+        <!--整合mybatis和Spring的jar包-->
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis-spring</artifactId>
+            <version>2.0.6</version>
+        </dependency>
+```
+
+### 步骤
+
+1. 编写实体类
+
+2. 编写核心配置文件
+3. 编写接口
+4. 编写Mapper.xml
+5. 测试
+
+### mybatis-spring
+
+将mybatis和Spring整合，由Spring托管
+
+#### 步骤
+
+1. 编写数据源配置
+2. sqlSessionFactory
+3. sqlSessionTemplate
+4. 需要给接口加实现类
+5. 将自己写的实现类，注入到Spring中使用
+
+### 事务
+
+
+
+# springMVC
+
+## 依赖
+
+```xml
+<dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>5.3.4</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.5</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet.jsp</groupId>
+            <artifactId>jsp-api</artifactId>
+            <version>2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
+    </dependencies>
+```
+
+
+
+## servlet示例
+
+![image-20210312163834247](Java学习笔记.assets/image-20210312163834247.png)
+
+创建正常的module，随后使用add Framework support 变成web项目
+
+### web.xml
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0">
+    <servlet>
+        <servlet-name>hello</servlet-name>
+        <servlet-class>HelloServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>hello</servlet-name>
+        <url-pattern>/hello</url-pattern>
+    </servlet-mapping>
+</web-app>
+```
+
+### HelloServlet.java
+
+```java
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+public class HelloServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String method = req.getParameter("method");
+        if(method.equals("add")) {
+            req.getSession().setAttribute("msg","执行了add方法22222");
+        }
+        if(method.equals("delete")) {
+            req.getSession().setAttribute("msg","执行了delete方法");
+        }
+        req.getRequestDispatcher("/WEB-INF/jsp/test.jsp").forward(req,resp);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        doGet(req,resp);
+    }
+}
+
+```
+
+## MVC 示例
+
+### web.xml
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0">
+
+    <servlet>
+        <servlet-name>springmvc</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <!--关联一个springMVC的配置文件-->
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:springmvc-servlet.xml</param-value>
+        </init-param>
+        <!--启动数字越小，启动越早-->
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <!--所有请求都会被SpringMVC拦截-->
+    <servlet-mapping>
+        <servlet-name>springmvc</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+</web-app>
+```
+
+### springmvc配置文件
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        https://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc
+        https://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <context:component-scan base-package="com.zhb.controller"/>
+    <!--让SpringMVC不处理静态资源， .css .mp4 .js......-->
+    <mvc:default-servlet-handler/>
+    <!--支持MVC注解驱动，会自动注入处理器映射器和适配器-->
+    <mvc:annotation-driven/>
+
+    <!--视图解析器-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" id="InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/jsp/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+</beans>
+```
+
+### Controller
+
+```java
+package com.zhb.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+public class HelloController {
+    @RequestMapping("/hello")
+    public String hello(Model model){
+        //封装数据
+        model.addAttribute("msg","Hello SpringMVC!!!!!!!!");
+        return "hello";
+    }
+}
+```
+
+
+
