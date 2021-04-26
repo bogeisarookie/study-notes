@@ -634,5 +634,57 @@ public class HelloController {
 }
 ```
 
+### Restful风格Controller
 
+```java
+package com.zhb.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+public class RestfulController {
+    //原来的请求： http://localhost:8080/add/?a=1&b=2
+    //Restful请求：http://localhost:8080/add/a/b
+    @RequestMapping("/add/{a}/{b}")
+    public String test1(@PathVariable int a, @PathVariable int b, Model model) {
+        int res = a + b;
+        model.addAttribute("msg", res);
+        return "test";
+    }
+}
+```
+
+# SpringBoot
+
+## 常见问题
+
+### 如何修改端口号
+
+SpringBoot既然内置了Tomcat，那如何修改Tomcat的配置呢，比如端口号？
+
+可以通过properties文件设置server.port属性
+
+### 修改启动Banner
+
+启动时候的大SpringBoot标志是个Banner，是可以修改的
+
+只要在和配置文件同级目录下放置一个banner.txt即可
+
+## 原理解析
+
+pom.xml
+
+- Spring-boot-dependencies: 核心依赖在父工程中
+- 我们在引入依赖的时候，不需要填写版本号，因为父工程中已经管理了
+
+Springboot所有的自动配置都是在启动的时候自动扫描并加载：spring.factories
+
+但是不一定生效，需要导入对应的start就有对应的启动器，有了启动器，自动装配就回生效，然后配置成功
+
+## 注解
+
+![图片](Java学习笔记.assets/640.jpeg)
 
